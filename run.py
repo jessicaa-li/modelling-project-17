@@ -12,8 +12,11 @@ types = ["fire", "water", "grass", "electric", "ice", "ground", "flying", "rock"
 for i in range(num_pokemon):
   foe_mon = {}
   player_mon = {}
-  foe.append(Var(foe_mon))
-  player.append(Var(player_mon))
+  for i in range(len(types)):
+    foe_mon[types[i]] = Var(False)
+    player_mon[types[i]] = Var(False)
+  foe.append(foe_mon)
+  player.append(player_mon)
 
 def make_implication(left, right):
   return (left.negate() | right)
@@ -33,7 +36,6 @@ def exclude_types(pokemon, type1, type2):
 def example_theory():
     E = Encoding()
     for i in range(num_pokemon): # constraints for EACH pokemon
-      # if foe is this type >> (.negate() |) these player types are strong and ~these player types are weak against
 
       #dual typing
       for i in range(num_pokemon):
@@ -42,25 +44,22 @@ def example_theory():
         dual_player = true
 
         #format
-        """
-        dual_foe = true
-        dual_foe &= foe[i][type1] & foe[i][type2] & ~(foe[i][type3] | foe[i][type4] | ... | foe[i][type_n])
-        """
-        for t in types:
-          for y in types:
+        for t in range(len(types)):
+          for y in range(len(types)):
             if y != t:
-              dual_foe &= foe[i][t] & foe[i][y] & (exclude_types(foe[i], t, y)).negate()
-              dual_player &= player[i][t] & player[i][y] & (exclude_types(player[i], t, y)).negate()
+              dual_foe &= foe[i][types[t]] & foe[i][types[y]] & (exclude_types(foe[i], types[t], types[y])).negate()
+              dual_player &= player[i][types[t]] & player[i][types[y]] & (exclude_types(player[i], types[t], types[y])).negate()
         
         # type possibilities (1 or 2)
         foe_type = dual_foe
         player_type = dual_player
-        for t in types:
-          foe_type |= (foe[i][t] & (exclude_types(foe[i], t, None)))
-          player_type |= (player[i][t] & (exclude_types(player[i], t, None)))
+        for t in range(len(types)):
+          foe_type |= (foe[i][types[t]] & (exclude_types(foe[i], types[t], None)))
+          player_type |= (player[i][types[t]] & (exclude_types(player[i], types[t], None)))
         E.add_constraint(foe_type)
-        E.add_constraint(player_type) # k i think these are right but maybe i got lost
+        E.add_constraint(player_type) 
 
+      # if foe is this type >> (.negate() |) these player types are strong and ~these player types are weak against
       # FIRE
       #E.add_constraint(make_implication(foe[i]["fire"], (player[i]["water"] | player[i]["ground"] | player[i]["rock"]) & (~player[i]["grass"] & ~player[i]["ice"])))
       E.add_constraint(foe[i]["fire"].negate() | ((player[i]["water"] | player[i]["ground"] | player[i]["rock"]) & (~player[i]["grass"] & ~player[i]["ice"])))
@@ -85,7 +84,8 @@ def example_theory():
 if __name__ == "__main__":
 
     T = example_theory()
-
+    print("it works :)")
+    """
     print("\nSatisfiable: %s" % T.is_satisfiable())
     print("# Solutions: %d" % T.count_solutions())
     print("   Solution: %s" % T.solve())
@@ -94,3 +94,4 @@ if __name__ == "__main__":
     for v,vn in zip([a,b,c,x,y,z], 'abcxyz'):
         print(" %s: %.2f" % (vn, T.likelihood(v)))
     print()
+    """
