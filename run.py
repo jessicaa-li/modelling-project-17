@@ -1,21 +1,29 @@
 
-from nnf import Var
+from nnf import Var, true, false
 from lib204 import Encoding
 
-"""
-# Call your variables whatever you want
-a = Var('a')
-b = Var('b')
-c = Var('c')
-x = Var('x')
-y = Var('y')
-z = Var('z')
-"""
 num_pokemon = 3 # can change this to whatever
 foe = []
 player = []
-types = ["fire", "water", "grass", "electric", "ground", "rock", "ice", "flying"] #idk if we actually need this
+types = ["fire", "water", "grass", "electric", "ice", "ground", "flying", "rock"] 
 
+# initializing variables
+# each pokemon is a dictionary of types
+for i in range(num_pokemon):
+  foe_mon = {}
+  player_mon = {}
+  foe.append(Var(foe_mon))
+  player.append(Var(player_mon))
+
+def make_implication(left, right):
+  return (left.negate() | right)
+
+def exclude_types(pokemon, type1, type2):
+  exclusion = false # for disjunctions initialize as false and conjunctions initialize as true
+  for i in range(len(types)):
+    if types[i] != type1 and types[i] != type2:
+      exclusion |= pokemon[types[i]]
+  return exclusion 
 
 # Build an example full theory for your setting and return it.
 #
@@ -24,9 +32,53 @@ types = ["fire", "water", "grass", "electric", "ground", "rock", "ice", "flying"
 #  what the expectations are.
 def example_theory():
     E = Encoding()
-    for i in range(num_pokemon):
-      # if foe is this type >> these types are strong and ~these types are weak against
-      E.add_constraint(foe[i]["fire"] >> ((player[i]["water"] | player[i]["ground"] | player[i]["rock"]) & (~player[i]["grass"] & ~player[i]["ice"]))) # format; do this for the rest of the types
+    for i in range(num_pokemon): # constraints for EACH pokemon
+      # if foe is this type >> (.negate() |) these player types are strong and ~these player types are weak against
+
+      #dual typing
+      for i in range(num_pokemon):
+        # whether dual type or not
+        dual_foe = true
+        dual_player = true
+
+        #format
+        """
+        dual_foe = true
+        dual_foe &= foe[i][type1] & foe[i][type2] & ~(foe[i][type3] | foe[i][type4] | ... | foe[i][type_n])
+        """
+        for t in types:
+          for y in types:
+            if y != t:
+              dual_foe &= foe[i][t] & foe[i][y] & (exclude_types(foe[i], t, y)).negate()
+              dual_player &= player[i][t] & player[i][y] & (exclude_types(player[i], t, y)).negate()
+        
+        # type possibilities (1 or 2)
+        foe_type = dual_foe
+        player_type = dual_player
+        for t in types:
+          foe_type |= (foe[i][t] & (exclude_types(foe[i], t, None)))
+          player_type |= (player[i][t] & (exclude_types(player[i], t, None)))
+        E.add_constraint(foe_type)
+        E.add_constraint(player_type) # k i think these are right but maybe i got lost
+
+      # FIRE
+      #E.add_constraint(make_implication(foe[i]["fire"], (player[i]["water"] | player[i]["ground"] | player[i]["rock"]) & (~player[i]["grass"] & ~player[i]["ice"])))
+      E.add_constraint(foe[i]["fire"].negate() | ((player[i]["water"] | player[i]["ground"] | player[i]["rock"]) & (~player[i]["grass"] & ~player[i]["ice"])))
+      # WATER
+      E.add_constraint(foe[i]["water"].negate() | ((player[i]["grass"] | player[i]["electric"]) & (~player[i]["fire"] & ~player[i]["ground"] & ~player[i]["rock"])))
+      # GRASS
+      E.add_constraint(foe[i]["grass"].negate() | ((player[i]["fire"] | player[i]["ice"] | player[i]["flying"]) & (~player[i]["water"] & ~player[i]["ground"] & ~player[i]["rock"])))
+      # ELECTRIC
+      E.add_constraint(foe[i]["electric"].negate() | ((player[i]["ground"]) & (~player[i]["water"] & ~player[i]["flying"])))
+      # ICE
+      E.add_constraint(foe[i]["ice"].negate() | ((player[i]["fire"] | player[i]["rock"]) & (~player[i]["grass"] & ~player[i]["ground"] & ~player[i]["flying"])))
+      # GROUND
+      E.add_constraint(foe[i]["ground"].negate() | ((player[i]["water"] | player[i]["grass"] | player[i]["ice"]) & (~player[i]["fire"] & ~player[i]["electric"] & ~player[i]["rock"])))
+      # FLYING
+      E.add_constraint(foe[i]["flying"].negate() | ((player[i]["electric"] | player[i]["ice"] | player[i]["rock"]) & (~player[i]["grass"])))
+      # ROCK
+      E.add_constraint(foe[i]["rock"].negate() | ((player[i]["water"] | player[i]["grass"] | player[i]["ground"]) & (~player[i]["fire"] & ~player[i]["ice"] & ~player[i]["flying"])))  
+      
     return E
 
 
