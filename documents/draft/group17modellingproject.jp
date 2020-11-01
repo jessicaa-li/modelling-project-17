@@ -1,0 +1,5 @@
+CONJECTUREPANEL Assignment
+	THEOREM IS ∃x.(F(x)∧T(x)),∀x.(T(x)→Q(x)),∃x.P(x)⊢∃x.(P(x)∧Q(x))
+	THEOREM IS ∃x.(F(x)∧(T(x)∨S(x))),∀x.((T(x)∨S(x))→Q(x)),∃x.P(x)⊢∃x.(P(x)∧Q(x))
+	THEOREM IS ∃x.(F(x)∧(T(x)∧S(x))),∀x.((T(x)∧S(x))→Q(x)),∃x.P(x)⊢∃x.(P(x)∧Q(x))
+END
