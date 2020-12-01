@@ -2,9 +2,7 @@
 
 # CISC/CMPE 204 Modelling Project
 
-Welcome to the major project for CISC/CMPE 204 (Fall 2020)!
-
-Change this README.md file to summarize your project (few sentences at most), and provide pointers to the general structure of the repository. How you organize and build things (which files, how you structure things, etc) is entirely up to you! The only things you must keep in place are what is already listed in the **Structure** section below.
+Our project aims to use the logic of Pokémon type effectiveness to build the player an ideal Pokémon team that best counters the team of their opponent. When given the type(s) of the foe's Pokémon, the model will return the type(s) of a Pokémon that will best counter it. This means that a Pokémon of the returned type(s), or a Pokémon with moves of the returned type(s), should be added to the player's team.
 
 ## Structure
 
