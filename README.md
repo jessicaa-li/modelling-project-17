@@ -2,7 +2,7 @@
 
 # CISC/CMPE 204 Modelling Project
 
-Our project aims to use the logic of Pokémon type effectiveness to build the player an ideal Pokémon team that best counters the team of their opponent. When given the type(s) of the foe's Pokémon, the model will return the type(s) of a Pokémon that will best counter it. This means that a Pokémon of the returned type(s), or a Pokémon with moves of the returned type(s), should be added to the player's team.
+Our project aims to use the logic of Pokémon type effectiveness to build the player an ideal Pokémon team that best counters the team of their opponent. When given the type(s) of the foe's Pokémon, the model will return the Pokémon type(s) that will best counter it. This means that a Pokémon of the returned type(s), or a Pokémon with moves of the returned type(s), should be added to the player's team.
 
 ## Structure
 
