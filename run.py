@@ -72,23 +72,23 @@ def optimal_battle_strategy():
       E.add_constraint((foe[i]["fire"] & foe[i]["grass"]).negate())
       
       """if a foe is type A, then player type B is strong against it and
-      player type C is weak against it
+      player type C is weak against it (or that type C would be less effective on type A)
       thus we say foe type A implies player type B and not player type C
       """
-      #FIRE is weak against water, ground, and rock; strong against grass and ice
-      E.add_constraint(make_implication(foe[i]["fire"], ((player[i]["water"] | player[i]["ground"] | player[i]["rock"]) & (player[i]["grass"].negate() & player[i]["ice"].negate()))))
+      #FIRE is weak against water, ground, and rock; strong against grass and ice; fire is not very effective on fire
+      E.add_constraint(make_implication(foe[i]["fire"], ((player[i]["water"] | player[i]["ground"] | player[i]["rock"]) & (player[i]["grass"].negate() & player[i]["ice"].negate() & player[i]["fire"].negate()))))
 
-      # WATER is weak against grass and electric; strong against fire, ground, and rock
-      E.add_constraint(make_implication(foe[i]["water"], ((player[i]["grass"] | player[i]["electric"]) & (player[i]["fire"].negate() & player[i]["ground"].negate() & player[i]["rock"].negate()))))
+      # WATER is weak against grass and electric; strong against fire, ground, and rock; ice is weak against it; water is not very effective on water
+      E.add_constraint(make_implication(foe[i]["water"], ((player[i]["grass"] | player[i]["electric"]) & (player[i]["fire"].negate() & player[i]["ground"].negate() & player[i]["rock"].negate() & player[i]["ice"].negate() & player[i]["water"].negate()))))
 
-      # GRASS is weak against fire, ice, and flying; strong against water, ground, and rock
-      E.add_constraint(make_implication(foe[i]["grass"], ((player[i]["fire"] | player[i]["ice"] | player[i]["flying"]) & (player[i]["water"].negate() & player[i]["ground"].negate() & player[i]["rock"].negate()))))
+      # GRASS is weak against fire, ice, and flying; strong against water, ground, and rock; grass is not very effective on grass
+      E.add_constraint(make_implication(foe[i]["grass"], ((player[i]["fire"] | player[i]["ice"] | player[i]["flying"]) & (player[i]["water"].negate() & player[i]["ground"].negate() & player[i]["rock"].negate() & player[i]["grass"].negate()))))
 
-      # ELECTRIC is ineffective against ground; strong against water and flying
-      E.add_constraint(make_implication(foe[i]["electric"], ((player[i]["ground"]) & (player[i]["water"].negate() & player[i]["flying"].negate()))))
+      # ELECTRIC is ineffective against ground; strong against water and flying; electric is not very effective on electric
+      E.add_constraint(make_implication(foe[i]["electric"], ((player[i]["ground"]) & (player[i]["water"].negate() & player[i]["flying"].negate() & player[i]["electric"].negate()))))
 
-      # ICE is weak against fire and rock; strong against grass, ground, and flying
-      E.add_constraint(make_implication(foe[i]["ice"], ((player[i]["fire"] | player[i]["rock"]) & (player[i]["grass"].negate() & player[i]["ground"].negate() & player[i]["flying"].negate()))))
+      # ICE is weak against fire, rock, and water; strong against grass, ground, and flying; ice is not very effective on ice
+      E.add_constraint(make_implication(foe[i]["ice"], ((player[i]["fire"] | player[i]["rock"] | player[i]["water"]) & (player[i]["grass"].negate() & player[i]["ground"].negate() & player[i]["flying"].negate() & player[i]["ice"].negate()))))
 
       # GROUND is weak against water, grass, and ice; ineffective against flying; strong against fire, and rock; immune to electric
       E.add_constraint(make_implication(foe[i]["ground"], ((player[i]["water"] | player[i]["grass"] | player[i]["ice"] | player[i]["flying"]) & (player[i]["fire"].negate() & player[i]["electric"].negate() & player[i]["rock"].negate()))))
@@ -105,9 +105,9 @@ def optimal_battle_strategy():
 Displaying the solution in an easy, readable way
 """
 def display_solution(sol):
-  print('Your foe\'s Pokemon:')
+  print('Your foe\'s Pokémon:')
   for i in range (len(foe)): # iterate through foe's party
-    print('Foe Pokemon %s' % str(i + 1) + '.', end=" ") # number in party
+    print('Foe Pokémon %s' % str(i + 1) + '.', end=" ") # number in party
     full_type = ''
     for type_key in foe[i]: # iterate through types of that pokemon
       if foe[i][type_key] == true:
@@ -116,16 +116,16 @@ def display_solution(sol):
         else: # one type has already been displayed
           full_type += '-' + type_key
     print(full_type)
-  print('Your Pokemon:')
+  print('Your Pokémon:')
   if not sol: # no solution was found; see our documentation
-    print('Your foe is too powerful. Give up now.')
+    print('No optimal Pokémon typing found. Give up now.')
   else: # valid solution
     for i in range(len(player)): # iterate through player's party
-      print('Player Pokemon %s' % str(i  + 1) + '.', end=" ")
+      print('Player Pokémon %s' % str(i  + 1) + '.', end=" ")
       full_type = ''
       for type_key in sol: 
         """first letter in each Var is the number describing the 
-        pokemon's place in the player's party. for aesthetic purposes,
+        Pokémon's place in the player's party. for aesthetic purposes,
         we will display just the type name without the #_ in front of it
         """ 
         if (type_key[0] == str(i)): 
@@ -154,9 +154,56 @@ def randomize_foe():
             type2 = types[randint(0, len(types) - 1)]
         pokemon[type2] = true
 
-if __name__ == "__main__":
-    randomize_foe() # if not putting in pokemon yourself, randomize the foe's party
+def test_all_combos():
+  # this assumes num_pokemon = 1
+  for t in types:
+    foe[0][t] = true
     T = optimal_battle_strategy()
     sol = T.solve()
     display_solution(sol)
-    
+    print('\n')
+    foe[0][t] = false
+
+  for i in range(len(types)-1):
+    for j in range(i+1, len(types)):
+      if (types[i] == "fire" and types[j] == "grass") or (types[i] == "grass" and types[j] == "fire"):
+        print('invalid type combination\n')
+      else:
+        foe[0][types[i]] = true
+        foe[0][types[j]] = true
+        T = optimal_battle_strategy()
+        sol = T.solve()
+        display_solution(sol)
+        print('\n')
+        foe[0][types[i]] = false
+        foe[0][types[j]] = false
+
+if __name__ == "__main__":
+    choice = input('Enter 0 to choose the foe\'s party, 1 to test all combos, or enter any other key to randomize the foe\'s party, or enter any other key : ')
+    if choice == '0': # randomly selects the foe's pokemon
+      for p in range(num_pokemon): # choose the foe pokemon
+        print(f'Foe #{p+1}')
+        type1 = None
+        type2 = None
+        while (type1 not in types):
+          type1 = (input('Choose type 1: ')).lower()
+        while (type2 not in types and type2 != 'single'):
+          type2 = (input('Choose type 2 (type \'single\' for a single-type Pokémon): ')).lower()
+        if (type1 == 'fire' and type2 == 'grass') or (type1 == 'grass' and type2 == 'fire'):
+          print('This type combination does not exist in the world of Pokémon.')
+          break 
+        foe[p][type1] = true
+        if type2 != 'single':
+          foe[p][type2] = true
+    elif choice == '1':
+        if num_pokemon == 1:
+          test_all_combos()
+        else:
+          print('Please set number of Pokémon to 1.')
+    else:
+      randomize_foe()
+
+    if choice != '1':
+      T = optimal_battle_strategy()
+      sol = T.solve()
+      display_solution(sol)
