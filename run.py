@@ -76,28 +76,28 @@ def optimal_battle_strategy():
       thus we say foe type A implies player type B and not player type C
       """
       #FIRE is weak against water, ground, and rock; strong against grass and ice; fire is not very effective on fire
-      E.add_constraint(make_implication(foe[i]["fire"], ((player[i]["water"] | player[i]["ground"] | player[i]["rock"]) & (player[i]["grass"].negate() & player[i]["ice"].negate() & player[i]["fire"].negate()))))
+      E.add_constraint(make_implication(foe[i]["fire"], ((player[i]["water"] | player[i]["ground"] | player[i]["rock"]) & (player[i]["grass"] | player[i]["ice"] | player[i]["fire"]).negate())))
 
       # WATER is weak against grass and electric; strong against fire, ground, and rock; ice is weak against it; water is not very effective on water
-      E.add_constraint(make_implication(foe[i]["water"], ((player[i]["grass"] | player[i]["electric"]) & (player[i]["fire"].negate() & player[i]["ground"].negate() & player[i]["rock"].negate() & player[i]["ice"].negate() & player[i]["water"].negate()))))
+      E.add_constraint(make_implication(foe[i]["water"], ((player[i]["grass"] | player[i]["electric"]) & (player[i]["fire"] | player[i]["ground"] | player[i]["rock"] | player[i]["ice"] | player[i]["water"]).negate())))
 
       # GRASS is weak against fire, ice, and flying; strong against water, ground, and rock; grass is not very effective on grass
-      E.add_constraint(make_implication(foe[i]["grass"], ((player[i]["fire"] | player[i]["ice"] | player[i]["flying"]) & (player[i]["water"].negate() & player[i]["ground"].negate() & player[i]["rock"].negate() & player[i]["grass"].negate()))))
+      E.add_constraint(make_implication(foe[i]["grass"], ((player[i]["fire"] | player[i]["ice"] | player[i]["flying"]) & (player[i]["water"] | player[i]["ground"] | player[i]["rock"] | player[i]["grass"]).negate())))
 
       # ELECTRIC is ineffective against ground; strong against water and flying; electric is not very effective on electric
-      E.add_constraint(make_implication(foe[i]["electric"], ((player[i]["ground"]) & (player[i]["water"].negate() & player[i]["flying"].negate() & player[i]["electric"].negate()))))
+      E.add_constraint(make_implication(foe[i]["electric"], ((player[i]["ground"]) & (player[i]["water"] | player[i]["flying"] | player[i]["electric"]).negate())))
 
       # ICE is weak against fire, rock, and water; strong against grass, ground, and flying; ice is not very effective on ice
-      E.add_constraint(make_implication(foe[i]["ice"], ((player[i]["fire"] | player[i]["rock"] | player[i]["water"]) & (player[i]["grass"].negate() & player[i]["ground"].negate() & player[i]["flying"].negate() & player[i]["ice"].negate()))))
+      E.add_constraint(make_implication(foe[i]["ice"], ((player[i]["fire"] | player[i]["rock"] | player[i]["water"]) & (player[i]["grass"] | player[i]["ground"] | player[i]["flying"] | player[i]["ice"]).negate())))
 
       # GROUND is weak against water, grass, and ice; ineffective against flying; strong against fire, and rock; immune to electric
-      E.add_constraint(make_implication(foe[i]["ground"], ((player[i]["water"] | player[i]["grass"] | player[i]["ice"] | player[i]["flying"]) & (player[i]["fire"].negate() & player[i]["electric"].negate() & player[i]["rock"].negate()))))
+      E.add_constraint(make_implication(foe[i]["ground"], ((player[i]["water"] | player[i]["grass"] | player[i]["ice"] | player[i]["flying"]) & (player[i]["fire"] | player[i]["electric"] | player[i]["rock"]).negate())))
 
       # FLYING is weak against electric, ice, and rock; strong against grass; immune to ground
-      E.add_constraint(make_implication(foe[i]["flying"], ((player[i]["electric"] | player[i]["ice"] | player[i]["rock"]) & (player[i]["grass"].negate() & player[i]["ground"].negate()))))
+      E.add_constraint(make_implication(foe[i]["flying"], ((player[i]["electric"] | player[i]["ice"] | player[i]["rock"]) & (player[i]["grass"] | player[i]["ground"]).negate())))
 
       # ROCK is weak against water, grass, and ground; strong against fire, ice, and flying
-      E.add_constraint(make_implication(foe[i]["rock"], ((player[i]["water"] | player[i]["grass"] | player[i]["ground"]) & (player[i]["fire"].negate() & player[i]["ice"].negate() & player[i]["flying"].negate()))))
+      E.add_constraint(make_implication(foe[i]["rock"], ((player[i]["water"] | player[i]["grass"] | player[i]["ground"]) & (player[i]["fire"] | player[i]["ice"] | player[i]["flying"]).negate())))
       
     return E
 
