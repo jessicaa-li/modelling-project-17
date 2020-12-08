@@ -1,0 +1,94 @@
+﻿CONJECTUREPANEL Assignment
+PROOF "∃x.(F(x)∧T(x)), ∀x.(T(x)→Q(x)), ∀x.P(x) ⊢ ∃x.(P(x)∧Q(x))"
+INFER ∃x.(F(x)∧T(x)),
+     ∀x.(T(x)→Q(x)),
+     ∀x.P(x)
+     ⊢ ∃x.(P(x)∧Q(x))
+FORMULAE
+0 actual i,
+1 P(i)∧Q(i),
+2 P(x)∧Q(x),
+3 i,
+4 x,
+5 ∃x.(P(x)∧Q(x)),
+6 Q(i),
+7 P(i),
+8 ∀x.P(x),
+9 P(x),
+10 T(i),
+11 T(i)→Q(i),
+12 ∀x.(T(x)→Q(x)),
+13 T(x)→Q(x),
+14 F(i)∧T(i),
+15 F(i),
+16 ∃x.(F(x)∧T(x)),
+17 F(x)∧T(x),
+18 ∀x.(T(x)→Q(x)),
+19 ∃x.(F(x)∧T(x))
+IS
+SEQ ("∃ elim"[i,C,P,x\3,5,17,4]) (hyp[A\16]) (cut[B,C\10,5]) (LAYOUT "∧ elim" (0) ("∧ elim(R)"[A,B\15,10]) (hyp[A\14])) (cut[B,C\11,5]) ("∀ elim"[P,i,x\13,3,4]) (hyp[A\12]) (hyp[A\0]) (cut[B,C\6,5]) ("→ elim"[A,B\10,6]) (hyp[A\11]) (hyp[A\10]) (cut[B,C\7,5]) ("∀ elim"[P,i,x\9,3,4]) (hyp[A\8]) (hyp[A\0]) (cut[B,C\1,5]) ("∧ intro"[A,B\7,6]) (hyp[A\7]) (hyp[A\6]) (cut[B,C\1,5]) (hyp[A\1]) ("∃ intro"[P,i,x\2,3,4]) (hyp[A\1]) (hyp[A\0])
+END
+CONJECTUREPANEL Assignment
+PROOF "∃x.(F(x)∧(T(x)∨S(x))), ∀x.((T(x)∨S(x))→Q(x)), ∀x.P(x) ⊢ ∃x.(P(x)∧Q(x))"
+INFER ∃x.(F(x)∧(T(x)∨S(x))),
+     ∀x.((T(x)∨S(x))→Q(x)),
+     ∀x.P(x)
+     ⊢ ∃x.(P(x)∧Q(x))
+FORMULAE
+0 actual i,
+1 P(i)∧Q(i),
+2 P(x)∧Q(x),
+3 i,
+4 x,
+5 ∃x.(P(x)∧Q(x)),
+6 Q(i),
+7 P(i),
+8 ∀x.P(x),
+9 P(x),
+10 T(i)∨S(i),
+11 T(i)∨S(i)→Q(i),
+12 ∀x.((T(x)∨S(x))→Q(x)),
+13 (T(x)∨S(x))→Q(x),
+14 (T(i)∨S(i))→Q(i),
+15 F(i)∧(T(i)∨S(i)),
+16 F(i),
+17 ∃x.(F(x)∧(T(x)∨S(x))),
+18 F(x)∧(T(x)∨S(x)),
+19 F(i)∧(T(i)∨S(i)),
+20 ∀x.((T(x)∨S(x))→Q(x)),
+21 ∃x.(F(x)∧(T(x)∨S(x)))
+IS
+SEQ ("∃ elim"[i,C,P,x\3,5,18,4]) (hyp[A\17]) (cut[B,C\10,5]) (LAYOUT "∧ elim" (0) ("∧ elim(R)"[A,B\16,10]) (hyp[A\15])) (cut[B,C\14,5]) ("∀ elim"[P,i,x\13,3,4]) (hyp[A\12]) (hyp[A\0]) (cut[B,C\6,5]) ("→ elim"[A,B\10,6]) (hyp[A\11]) (hyp[A\10]) (cut[B,C\7,5]) ("∀ elim"[P,i,x\9,3,4]) (hyp[A\8]) (hyp[A\0]) (cut[B,C\1,5]) ("∧ intro"[A,B\7,6]) (hyp[A\7]) (hyp[A\6]) (cut[B,C\1,5]) (hyp[A\1]) ("∃ intro"[P,i,x\2,3,4]) (hyp[A\1]) (hyp[A\0])
+END
+CONJECTUREPANEL Assignment
+PROOF "∃x.(F(x)∧(T(x)∧S(x))), ∀x.((T(x)∧S(x))→Q(x)), ∀x.P(x) ⊢ ∃x.(P(x)∧Q(x))"
+INFER ∃x.(F(x)∧(T(x)∧S(x))),
+     ∀x.((T(x)∧S(x))→Q(x)),
+     ∀x.P(x)
+     ⊢ ∃x.(P(x)∧Q(x))
+FORMULAE
+0 actual i,
+1 P(i)∧Q(i),
+2 P(x)∧Q(x),
+3 i,
+4 x,
+5 ∃x.(P(x)∧Q(x)),
+6 Q(i),
+7 P(i),
+8 ∀x.P(x),
+9 P(x),
+10 T(i)∧S(i),
+11 T(i)∧S(i)→Q(i),
+12 ∀x.((T(x)∧S(x))→Q(x)),
+13 (T(x)∧S(x))→Q(x),
+14 (T(i)∧S(i))→Q(i),
+15 F(i)∧(T(i)∧S(i)),
+16 F(i),
+17 ∃x.(F(x)∧(T(x)∧S(x))),
+18 F(x)∧(T(x)∧S(x)),
+19 F(i)∧(T(i)∧S(i)),
+20 ∀x.((T(x)∧S(x))→Q(x)),
+21 ∃x.(F(x)∧(T(x)∧S(x)))
+IS
+SEQ ("∃ elim"[i,C,P,x\3,5,18,4]) (hyp[A\17]) (cut[B,C\10,5]) (LAYOUT "∧ elim" (0) ("∧ elim(R)"[A,B\16,10]) (hyp[A\15])) (cut[B,C\14,5]) ("∀ elim"[P,i,x\13,3,4]) (hyp[A\12]) (hyp[A\0]) (cut[B,C\6,5]) ("→ elim"[A,B\10,6]) (hyp[A\11]) (hyp[A\10]) (cut[B,C\7,5]) ("∀ elim"[P,i,x\9,3,4]) (hyp[A\8]) (hyp[A\0]) (cut[B,C\1,5]) ("∧ intro"[A,B\7,6]) (hyp[A\7]) (hyp[A\6]) (cut[B,C\1,5]) (hyp[A\1]) ("∃ intro"[P,i,x\2,3,4]) (hyp[A\1]) (hyp[A\0])
+END
