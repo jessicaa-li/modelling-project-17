@@ -3,7 +3,7 @@ from nnf import Var, true, false
 from lib204 import Encoding
 from random import randint
 
-num_pokemon = 1 # number of pokemon each party has
+num_pokemon = 3 # number of pokemon each party has
 foe = [] # the foe's party of pokemon
 player = [] # the player's party of pokemon
 # different pokemon types
