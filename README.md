@@ -4,6 +4,8 @@
 
 Our project aims to use the logic of Pokémon type effectiveness to build the player an ideal Pokémon team that best counters the team of their opponent. When given the type(s) of the foe's Pokémon, the model will return the Pokémon type(s) that will best counter it. This means that a Pokémon of the returned type(s), or a Pokémon with moves of the returned type(s), should be added to the player's team.
 
+Chosen as one of the top 10 best projects out of 85 teams. 
+
 ## Structure
 
 * `documents`: Contains folders for both of your draft and final submissions. README.md files are included in both.
