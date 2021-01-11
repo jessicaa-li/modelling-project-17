@@ -6,6 +6,12 @@ Our project aims to use the logic of Pokémon type effectiveness to build the pl
 
 Chosen as one of the top 10 best modelling projects out of 85 teams. 
 
+## Team
+* <a href="https://github.com/isabellaenriquez">Isabella Enriquez</a>
+* <a href="https://github.com/18ask15">Alysha Kim</a>
+* <a href="https://github.com/jessicaa-li">Jessica Li</a>
+* <a href="https://github.com/andrewms-27">Andrew Mun-Shimoda</a>
+
 ## Structure
 
 * `documents`: Contains folders for both of your draft and final submissions. README.md files are included in both.
